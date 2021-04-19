@@ -19,8 +19,18 @@ int main(int argv, char **args) {
     if(NULL == window) {
       std::cout << "Video Init Error:  " << SDL_GetError() << std::endl;
     } else {
-      SDL_UpdateWindowSurface(window);
-      SDL_Delay(5000);
+
+      bool isRunning = true;
+      SDL_Event ev;
+
+      while (isRunning) {
+        while (SDL_PollEvent(&ev) != 0) {
+          if (ev.type == SDL_QUIT) {
+            isRunning = false;
+          }
+
+        SDL_UpdateWindowSurface(window);
+      }
     }
   }
 
