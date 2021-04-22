@@ -1,13 +1,37 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <time.h>
 
 #include <cstdio>
 #include <iostream>
+#include <random>
+
+const int cells_wide = 4;
+const int cells_high = 4;
+
+const int margin = 10;
+const int w_width = 640;
+const int w_height = 480;
+const int g_width = w_width / cells_wide;
+const int g_height = w_height / cells_high;
+
+struct rect {
+  int r;
+  int b;
+  int g;
+  int a;  // alpha
+};
 
 int main(int argv, char **args) {
+  srand(time(NULL));
+
   using namespace std;
   freopen("output.txt", "w", stdout);
   freopen("error.txt", "w", stderr);
+
+  struct rect rects[3] = {{rand() % 255, rand() % 255, rand() % 255, 0xFF},
+                          {rand() % 255, rand() % 255, rand() % 255, 0xFF},
+                          {rand() % 255, rand() % 255, rand() % 255, 0xFF}};
 
   SDL_Window *window = nullptr;
   SDL_Renderer *renderer = nullptr;
@@ -15,14 +39,15 @@ int main(int argv, char **args) {
   if (SDL_Init(SDL_INIT_VIDEO) < 0) {
     std::cerr << "Video Init Error:  " << SDL_GetError() << std::endl;
   } else {
-    window =
-        SDL_CreateWindow("SDL CodingMadeEasy Series", SDL_WINDOWPOS_CENTERED,
-                         SDL_WINDOWPOS_CENTERED, 640, 480, SDL_WINDOW_SHOWN);
+    window = SDL_CreateWindow("SDL CodingMadeEasy Series",
+                              SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+                              w_width, w_height, SDL_WINDOW_SHOWN);
     if (NULL == window) {
       std::cerr << "Video Init Error:  " << SDL_GetError() << std::endl;
     } else {
       renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
+      int selected = 0;
       bool isRunning = true;
       SDL_Event ev;
 
@@ -35,13 +60,13 @@ int main(int argv, char **args) {
           SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
           SDL_RenderClear(renderer);
 
-          SDL_Rect fillRect1 = {160, 120, 320, 240};
-          SDL_SetRenderDrawColor(renderer, 0x00, 0xFF, 0x00, 0xFF);
-          SDL_RenderFillRect(renderer, &fillRect1);
-
-          SDL_Rect fillRect2 = {0,0, 320, 240};
-          SDL_SetRenderDrawColor(renderer, 0x00, 0xFF, 0xFF, 0xFF);
-          SDL_RenderFillRect(renderer, &fillRect2);
+          for (int i = 0; i < (sizeof rects / sizeof rects[0]); i++) {
+            SDL_Rect fillRect = {g_width * i + margin, margin,
+                                 g_width - 2 * margin, g_height - 2 * margin};
+            SDL_SetRenderDrawColor(renderer, rects[i].r, rects[i].b, rects[i].g,
+                                   rects[i].a);
+            SDL_RenderFillRect(renderer, &fillRect);
+          }
 
           SDL_RenderPresent(renderer);
         }
