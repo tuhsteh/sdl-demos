@@ -47,7 +47,7 @@ int main(int argv, char **args) {
     } else {
       renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
-      int selected = 0;
+      int selected = rand() % 2;
       bool isRunning = true;
       SDL_Event ev;
 
@@ -61,8 +61,12 @@ int main(int argv, char **args) {
           SDL_RenderClear(renderer);
 
           for (int i = 0; i < (sizeof rects / sizeof rects[0]); i++) {
-            SDL_Rect fillRect = {g_width * i + margin, margin,
-                                 g_width - 2 * margin, g_height - 2 * margin};
+            SDL_Rect fillRect = {
+              g_width * i + (margin*((selected == i) ? 0 : 1)),
+              (margin*((selected == i) ? 0 : 1)),
+              g_width - 2 * (margin*((selected == i) ? 0 : 1)),
+              g_height - 2 * (margin*((selected == i) ? 0 : 1))
+            };
             SDL_SetRenderDrawColor(renderer, rects[i].r, rects[i].b, rects[i].g,
                                    rects[i].a);
             SDL_RenderFillRect(renderer, &fillRect);
