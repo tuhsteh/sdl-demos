@@ -29,9 +29,12 @@ int main(int argv, char **args) {
   freopen("output.txt", "w", stdout);
   freopen("error.txt", "w", stderr);
 
-  struct rect rects[3] = {{rand() % 255, rand() % 255, rand() % 255, 0xFF},
+  struct rect rects[4] = {{rand() % 255, rand() % 255, rand() % 255, 0xFF},
+                          {rand() % 255, rand() % 255, rand() % 255, 0xFF},
                           {rand() % 255, rand() % 255, rand() % 255, 0xFF},
                           {rand() % 255, rand() % 255, rand() % 255, 0xFF}};
+
+  const int ULIMIT = sizeof rects / sizeof rects[0] - 1;
 
   SDL_Window *window = nullptr;
   SDL_Renderer *renderer = nullptr;
@@ -47,7 +50,8 @@ int main(int argv, char **args) {
     } else {
       renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
-      int selected = rand() % 2;
+      int selected = 0;
+      std::cout << "Selected tile:  " << selected << std::endl;
       bool isRunning = true;
       SDL_Event ev;
 
@@ -55,6 +59,15 @@ int main(int argv, char **args) {
         while (SDL_PollEvent(&ev) != 0) {
           if (ev.type == SDL_QUIT) {
             isRunning = false;
+          } else if (ev.type == SDL_KEYDOWN) {
+            if (ev.key.keysym.sym == SDLK_RIGHT) {
+              selected = min(selected + 1, ULIMIT);
+              std::cout << "Selected tile:  " << selected << std::endl;
+            } else if (ev.key.keysym.sym == SDLK_LEFT) {
+              selected = max(selected - 1, 0);
+              std::cout << "Selected tile:  " << selected << std::endl;
+            }
+            std::cout << "Selected tile:  " << selected << std::endl;
           }
 
           SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
@@ -62,11 +75,10 @@ int main(int argv, char **args) {
 
           for (int i = 0; i < (sizeof rects / sizeof rects[0]); i++) {
             SDL_Rect fillRect = {
-              g_width * i + (margin*((selected == i) ? 0 : 1)),
-              (margin*((selected == i) ? 0 : 1)),
-              g_width - 2 * (margin*((selected == i) ? 0 : 1)),
-              g_height - 2 * (margin*((selected == i) ? 0 : 1))
-            };
+                g_width * i + (margin * ((selected == i) ? 0 : 1)),
+                (margin * ((selected == i) ? 0 : 1)),
+                g_width - 2 * (margin * ((selected == i) ? 0 : 1)),
+                g_height - 2 * (margin * ((selected == i) ? 0 : 1))};
             SDL_SetRenderDrawColor(renderer, rects[i].r, rects[i].b, rects[i].g,
                                    rects[i].a);
             SDL_RenderFillRect(renderer, &fillRect);

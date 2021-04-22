@@ -1,0 +1,17 @@
+Selected tile:  0
+Selected tile:  1
+Selected tile:  1
+Selected tile:  2
+Selected tile:  2
+Selected tile:  3
+Selected tile:  3
+Selected tile:  3
+Selected tile:  3
+Selected tile:  2
+Selected tile:  2
+Selected tile:  1
+Selected tile:  1
+Selected tile:  0
+Selected tile:  0
+Selected tile:  0
+Selected tile:  0
