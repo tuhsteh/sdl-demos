@@ -79,11 +79,19 @@ int main(int argv, char **args) {
             isRunning = false;
           } else if (ev.type == SDL_KEYDOWN) {
             if (ev.key.keysym.sym == SDLK_RIGHT) {
-              selected.x = min(selected.x + 1, W_LIMIT-1);
+              selected.x = min(selected.x + 1, W_LIMIT - 1);
               std::cout << "Selected tile:  {" << selected.x << ", "
                         << selected.y << "};" << std::endl;
             } else if (ev.key.keysym.sym == SDLK_LEFT) {
               selected.x = max(selected.x - 1, 0);
+              std::cout << "Selected tile:  {" << selected.x << ", "
+                        << selected.y << "};" << std::endl;
+            } else if (ev.key.keysym.sym == SDLK_DOWN) {
+              selected.y = min(selected.y + 1, H_LIMIT - 1);
+              std::cout << "Selected tile:  {" << selected.x << ", "
+                        << selected.y << "};" << std::endl;
+            } else if (ev.key.keysym.sym == SDLK_UP) {
+              selected.y = max(selected.y - 1, 0);
               std::cout << "Selected tile:  {" << selected.x << ", "
                         << selected.y << "};" << std::endl;
             }
