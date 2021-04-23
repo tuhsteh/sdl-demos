@@ -68,4 +68,8 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+# my logging
+output.txt
+error.txt
+
 # End of https://www.toptal.com/developers/gitignore/api/windows,c++
