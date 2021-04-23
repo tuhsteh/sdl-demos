@@ -95,8 +95,14 @@ int main(int argv, char **args) {
           }
 
           color sky_now = pickNextColor();
+          color hc_outline = pickHighContrast();
 
-          std::cout << "Select color:  {" << sky_now.r << ", " << sky_now.b << ", " << sky_now.g << ", " << sky_now.a << "}." <<std::endl;
+          std::cout << "Select sky color:  {" << sky_now.r << ", " << sky_now.b
+                    << ", " << sky_now.g << ", " << sky_now.a << "}."
+                    << std::endl;
+          std::cout << "Select HC color:  {" << hc_outline.r << ", "
+                    << hc_outline.b << ", " << hc_outline.g << ", "
+                    << hc_outline.a << "}." << std::endl;
 
           SDL_SetRenderDrawColor(renderer, sky_now.r, sky_now.b, sky_now.g,
                                  sky_now.a);
@@ -120,6 +126,8 @@ int main(int argv, char **args) {
                                      categories[i][j].b, categories[i][j].g,
                                      categories[i][j].a);
               SDL_RenderFillRect(renderer, &fillRect);
+              SDL_SetRenderDrawColor(renderer, hc_outline.r, hc_outline.g, hc_outline.b, hc_outline.a);
+              SDL_RenderDrawRect(renderer, &fillRect);
             }
           }
 
